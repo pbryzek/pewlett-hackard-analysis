@@ -162,3 +162,23 @@ INNER JOIN dept_emp AS de
 ON (ce.emp_no = de.emp_no)
 INNER JOIN departments AS d
 ON (de.dept_no = d.dept_no);
+-- Skill Drill 7.3.6 #1
+SELECT e.emp_no, e.first_name, e.last_name, d.dept_no
+INTO retirement_info_sales 
+FROM employees as e
+INNER JOIN dept_emp AS de
+ON (e.emp_no = de.emp_no)
+INNER JOIN departments AS d
+ON (de.dept_no = d.dept_no)
+WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31') AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31') AND (de.dept_no='d007');
+SELECT * FROM retirement_info_sales;
+-- Skill Drill 7.3.6 #2
+SELECT e.emp_no, e.first_name, e.last_name, d.dept_no
+INTO retirement_info_sales_dev
+FROM employees as e
+INNER JOIN dept_emp AS de
+ON (e.emp_no = de.emp_no)
+INNER JOIN departments AS d
+ON (de.dept_no = d.dept_no)
+WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31') AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31') AND de.dept_no in ('d007','d005');
+SELECT * FROM retirement_info_sales_dev;
