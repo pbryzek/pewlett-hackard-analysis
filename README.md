@@ -7,6 +7,3 @@
 
 ### Module
 [Module](module/)
-
-### Class
-[Class](class/)
