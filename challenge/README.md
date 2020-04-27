@@ -62,10 +62,11 @@ WHERE de.to_date = '9999-01-01';
 #### Table: emp_titles
 </br>
 **Description**
+</br>
 The emp_titles table is a partition table from emp_history, accounting only for the most recent (current) employee title. This is relevant as the same employee (emp_no) may have had multiple titles over time at this company.
-
 </br>
 **Query**
+</br>
 SELECT emp_no,
  first_name,
  last_name,
@@ -84,7 +85,6 @@ FROM
  ) tmp WHERE rn = 1
 ORDER BY emp_no;
 </br>
-
 #### Table: emp_eligibility
 **Description**
 The emp_eligibility holds rows for all the employees taking into account their current title info as held in emp_titles table. There is a layer of filtering applied to the employee's birth dates to take into account only those emplloyees born in 1965.
