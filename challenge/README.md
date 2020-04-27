@@ -22,6 +22,10 @@ Bobby’s new assignment consists of three parts: two additional analyses and a 
 ### Challenge Findings
 #### EmployeeDB ERD
 ![EmployeeDB](./analysis/EmployeeDB.png)
+#### .CSVs Generated
+[emp_eligibility](./analysis/emp_eligibility.csv)
+[emp_history](./analysis/emp_history.csv)
+[emp_titles](./analysis/emp_titles.csv)
 
 #### Pewlett Hackard Raw Data Table Name: Description
 These tables were created to support the raw data import .CSV files. These are the raw data files obtained from the enterprise 
