@@ -150,7 +150,7 @@ One immediate limitation of the analysis of this challenge is that when analyzin
 At a macro level this shows that 1,549 / 240,142 or .645% of the employee population, less than 1% of the employees. From the group by title query on the emp_eligibility table, it provides a breakdown of the different job titles that have current employees eligible to retire. We can see the following distributions, when taking into each job title's eligibility divided by the total eligible (1,549). 
 <br/>
 <br/>
-**Title Distribution of all retirees eligibility**
+**(job title eligibility)/(total eligibility)**
 - Assistant Engineer: 29; 1.87% 
 - Staff: 155; 10.01%
 - Senior Staff: 569; 36.73%
@@ -159,17 +159,6 @@ At a macro level this shows that 1,549 / 240,142 or .645% of the employee popula
 - Senior Engineer 529; 34.15%
 <br/>
 The previous query shows that Senior Staff is the title type that has the largest percentage (36.7%) of employees that is set to become retirement eligible. Senior Engineer shows the 2nd highest percentage (34.15%) of all employees that are becoming retirement eligible.
-<br/>
-
-**(job title eligibility)/(total eligibility)**
-Title: (total num eligible); percentage of total eligible
-<br/>
-- Assistant Engineer: 29; 1.87% 
-- Staff: 155; 10.01%
-- Senior Staff: 569; 36.73%
-- Technique Leader: 77; 4.97%
-- Engineer: 190; 12.27%
-- Senior Engineer 529; 34.15%
 <br/>
 
 **Total job titles employed by PH**
