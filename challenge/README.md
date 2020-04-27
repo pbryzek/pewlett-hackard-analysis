@@ -117,15 +117,19 @@ q: SELECT count(1) FROM employees;
 <br/>
 d: Running an inital query on the employees table shows that this table holds a set of 300,024 employee rows.
 <br/>
+<br/>
 q: SELECT count(1) FROM emp_titles;
 <br/>
 d: Running a query on the employee title table shows there are 240,142 employees with a current title.
+<br/>
 <br/>
 q: SELECT count(1) FROM emp_eligibility;
 <br/>
 d: Inital query on the emp_eligibility table shows a set of 1,549 active employees who have a birth_date in 1965.
 <br/>
+<br/>
 q: SELECT title, count(*) from emp_eligibility GROUP BY title;
+<br/>
 <br/>
 "Assistant Engineer" 29
 "Staff"	155
@@ -134,7 +138,9 @@ q: SELECT title, count(*) from emp_eligibility GROUP BY title;
 "Engineer" 190
 "Senior Engineer" 529
 <br/>
+<br/>
 One immediate limitation of the analysis of this challenge is that when analyzing the impact of the silver tsunami, we only took into account those employees turning 65 this year. This segment of 1,549 represents only those currently employed and turning 65 this year - it fails to account for any current employee over the age of 65. At a macro level, we can see that there are 1,549 eligibile employees for retirement out of 240,142 employees with a current job title. At a macro level this shows that 1,549 / 240,142 or .645% of the employee population, less than 1% of the employees. From the group by title query on the emp_eligibility table, it provides a breakdown of the different job titles that have current employees eligible to retire. We can see the following distributions, when taking into each job title's eligibility divided by the total eligible (1,549). 
+<br/>
 <br/>
 **Title Distribution**
 - Assistant Engineer: 29; 1.87%
