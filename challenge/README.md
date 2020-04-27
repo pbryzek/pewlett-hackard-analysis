@@ -153,5 +153,24 @@ At a macro level this shows that 1,549 / 240,142 or .645% of the employee popula
 - Engineer: 190; 12.27%
 - Senior Engineer 529; 34.15%
 <br/>
-<br/>
 The previous query shows that Senior Staff is the title type that has the largest percentage (36.7%) of employees that is set to become retirement eligible. Senior Engineer shows the 2nd highest percentage (34.15%) of all employees that are becoming retirement eligible.
+<br/>
+
+**(job title eligibility)/(total eligibility)**
+Title: (total num eligible); percentage of total eligible
+<br/>
+- Assistant Engineer: 29; 1.87% 
+- Staff: 155; 10.01%
+- Senior Staff: 569; 36.73%
+- Technique Leader: 77; 4.97%
+- Engineer: 190; 12.27%
+- Senior Engineer 529; 34.15%
+<br/>
+
+**(job title eligibility)/(total job titles employed)**
+- Assistant Engineer: 29 / ; 1.87% 
+- Staff: 155; 10.01%
+- Senior Staff: 569; 36.73%
+- Technique Leader: 77; 4.97%
+- Engineer: 190; 12.27%
+- Senior Engineer 529; 34.15%
