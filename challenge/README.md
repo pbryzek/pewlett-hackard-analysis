@@ -24,10 +24,13 @@ Bobby’s new assignment consists of three parts: two additional analyses and a 
 ![EmployeeDB](./analysis/EmployeeDB.png)
 #### .CSVs Generated
 [emp_eligibility](./analysis/emp_eligibility.csv)
+</br>
 [emp_history](./analysis/emp_history.csv)
+</br>
 [emp_titles](./analysis/emp_titles.csv)
+</br>
 
-#### Pewlett Hackard Raw Data Table Name: Description
+### Pewlett Hackard Raw Data Table Name: Description
 These tables were created to support the raw data import .CSV files. These are the raw data files obtained from the enterprise 
 - employees: Information on each employee of Pewlett Hackard including full name, birth date, an unique employee number, gender, and his corresponding hire date. This table is where the unique employer number originates from.
 - titles: The primary key is formed from a composite of the emp_no, title, and from_date because the same employee could have had different titles, or same title at different times; consequently, all three are required for an unique title entry. This table also provides the corresponding ending date of that title. If the title is the current title for that employee, the end_date is set to a future date of '9999-01-01'.
@@ -36,11 +39,33 @@ These tables were created to support the raw data import .CSV files. These are t
 - dept_emp: Primary key is a composite of the unique employer number (foreign key to the Employers table) and the unique deptartment number (foreign key to departments table). This table holds the employees for the different departments.
 - dept_manager: Primary key is a composite of the unique employer number (foreign key to the Employers table) and the unique deptartment number (foreign key to departments table). This table holds the managers for the different departments.
 
-#### PostGres Queries: Dynamic Table generated:
-##### emp_titles
-**emp_titles Description**
+### PostGres Queries: Dynamic Tables generated:
 
-**emp_titles Query**
+#### Table: emp_history
+**Description**
+This purpose of the emp_history query is to combine various fields regarding the same employee into a new table. It uses three inner joins to get data from employees, titles, dept_emp, and salaries tables - all joined on the unique emp_no. This table holds the relevant info for employees accounting for all their various titles held within the company.
+</br>
+**Query**
+SELECT 
+	emp.emp_no,
+	emp.first_name,
+	emp.last_name,
+	ti.title,
+	ti.from_date,
+	sa.salary
+INTO emp_history
+FROM employees AS emp
+INNER JOIN titles ti ON emp.emp_no = ti.emp_no
+INNER JOIN dept_emp de ON emp.emp_no = de.emp_no
+INNER JOIN salaries sa ON emp.emp_no = sa.emp_no
+WHERE de.to_date = '9999-01-01';
+</br>
+#### Table: emp_titles
+**Description**
+The emp_titles table is a partition table from emp_history, accounting only for the most recent (current) employee title.
+
+</br>
+**Query**
 SELECT emp_no,
  first_name,
  last_name,
@@ -60,58 +85,26 @@ FROM
 ORDER BY emp_no;
 </br>
 
-**Dynamic Table created**
-- emp_titles: 
-
-##### emp_history
-**emp_history Description**
-This purpose of the emp_history query is to combine various fields regarding the same employee into a new table. It uses three inner joins to get data from employees, titles, dept_emp, and salaries tables - all joined on the unique emp_no. 
+#### Table: emp_eligibility
+**Description**
+The emp_eligibility holds rows for all the employees taking into account their current title info as held in emp_titles table. There is a layer of filtering applied to the employee's birth dates to take into account only those emplloyees born in 1965.
 </br>
 
-**emp_history Query**
+**Query**
 SELECT 
-	emp.emp_no,
-	emp.first_name,
-	emp.last_name,
-	ti.title,
-	ti.from_date,
-	sa.salary
-INTO emp_history
-FROM employees AS emp
-INNER JOIN titles ti ON emp.emp_no = ti.emp_no
-INNER JOIN dept_emp de ON emp.emp_no = de.emp_no
-INNER JOIN salaries sa ON emp.emp_no = sa.emp_no
-WHERE de.to_date = '9999-01-01';
-</br>
-
-**Dynamic Table created**
-- emp_history: New table created dynamically from joining the titles, salaries, and dept_emp tables on the emp_no field. In the dept_emp table we specific the query with a to_date = '9999-01-01' as this filters the employees to only those currently still employed. 
-
-##### emp_eligibility
-**emp_eligibility Description**
-
-</br>
-
-**emp_eligibility Query**
-SELECT 
-	emp.emp_no,
-	emp.first_name,
-	emp.last_name,
+	emp_title.emp_no,
+	emp_title.first_name,
+	emp_title.last_name,
 	emp.birth_date,
-	ti.title,
-	ti.from_date,
-	ti.to_date
+	emp_title.title,
+	emp_title.from_date,
+	de.to_date
 INTO emp_eligibility
-FROM employees AS emp
-INNER JOIN titles ti ON emp.emp_no = ti.emp_no
-INNER JOIN dept_emp de ON emp.emp_no = de.emp_no
+FROM emp_titles AS emp_title
+INNER JOIN dept_emp de ON emp_title.emp_no = de.emp_no
+INNER JOIN employees emp ON emp.emp_no = emp_title.emp_no
 WHERE de.to_date = '9999-01-01' AND (emp.birth_date BETWEEN '1965-01-01' AND '1965-12-31');
 </br>
-
-**Dynamic Table created**
-- emp_eligibility: 
-
-
 
 ### Challenge Analysis
 For the week 7 challenge, we were instructed to assist Bobby's manager to determine how many roles will soon need to be filled as the "silver tsunami" begins to make an impact at his enterprise employer: Pewlett Hackard. The silver tsunami refers to the phenomenon they are experiencing as a significant proportion of their employees are set to retire, leaving major gaps to fill littered across the enterprise. Bobby's manager is interested in getting the full list of current employees born in 1965, making them eligible for retirement. 
