@@ -1,5 +1,5 @@
 # Bootcamp: UCB-VIRT-DATA-PT-03-2020-U-B-TTH
-### Bootcamp Challenge #7 - 4/26/2020
+## Bootcamp Challenge #7 - 4/26/2020
 Bootcamp Challenge 7: Module pewlett-hackard-analysis
 
 ### Dataset Used
@@ -23,8 +23,96 @@ Bobby’s new assignment consists of three parts: two additional analyses and a 
 #### EmployeeDB ERD
 ![EmployeeDB](./analysis/EmployeeDB.png)
 
+#### Pewlett Hackard Raw Data Table Name: Description
+These tables were created to support the raw data import .CSV files. These are the raw data files obtained from the enterprise 
+- employees: Information on each employee of Pewlett Hackard including full name, birth date, an unique employee number, gender, and his corresponding hire date. This table is where the unique employer number originates from.
+- titles: The primary key is formed from a composite of the emp_no, title, and from_date because the same employee could have had different titles, or same title at different times; consequently, all three are required for an unique title entry. This table also provides the corresponding ending date of that title. If the title is the current title for that employee, the end_date is set to a future date of '9999-01-01'.
+- salaries: This table holds all the salaries for the employees of Pewlett Hackard. In this table the primary key is emp_no, unlike the titles table that used three columns for a composite key. This implies that the company never gives out salary increases, instead only offering title changes. This table holds the dates that salary for that employee was valid for.
+- departments: Simple table that maps the company's nine departments to a unique department number.
+- dept_emp: Primary key is a composite of the unique employer number (foreign key to the Employers table) and the unique deptartment number (foreign key to departments table). This table holds the employees for the different departments.
+- dept_manager: Primary key is a composite of the unique employer number (foreign key to the Employers table) and the unique deptartment number (foreign key to departments table). This table holds the managers for the different departments.
+
+#### PostGres Queries: Dynamic Table generated:
+##### emp_titles
+**emp_titles Description**
+
+**emp_titles Query**
+SELECT emp_no,
+ first_name,
+ last_name,
+ title,
+ from_date
+INTO emp_titles
+FROM
+ (SELECT emp_no,
+ first_name,
+ last_name,
+ title,
+ from_date, ROW_NUMBER() OVER
+ (PARTITION BY (emp_no)
+ ORDER BY from_date DESC) rn
+ FROM emp_history
+ ) tmp WHERE rn = 1
+ORDER BY emp_no;
+</br>
+
+**Dynamic Table created**
+- emp_titles: 
+
+##### emp_history
+**emp_history Description**
+This purpose of the emp_history query is to combine various fields regarding the same employee into a new table. It uses three inner joins to get data from employees, titles, dept_emp, and salaries tables - all joined on the unique emp_no. 
+</br>
+
+**emp_history Query**
+SELECT 
+	emp.emp_no,
+	emp.first_name,
+	emp.last_name,
+	ti.title,
+	ti.from_date,
+	sa.salary
+INTO emp_history
+FROM employees AS emp
+INNER JOIN titles ti ON emp.emp_no = ti.emp_no
+INNER JOIN dept_emp de ON emp.emp_no = de.emp_no
+INNER JOIN salaries sa ON emp.emp_no = sa.emp_no
+WHERE de.to_date = '9999-01-01';
+</br>
+
+**Dynamic Table created**
+- emp_history: New table created dynamically from joining the titles, salaries, and dept_emp tables on the emp_no field. In the dept_emp table we specific the query with a to_date = '9999-01-01' as this filters the employees to only those currently still employed. 
+
+##### emp_eligibility
+**emp_eligibility Description**
+
+</br>
+
+**emp_eligibility Query**
+SELECT 
+	emp.emp_no,
+	emp.first_name,
+	emp.last_name,
+	emp.birth_date,
+	ti.title,
+	ti.from_date,
+	ti.to_date
+INTO emp_eligibility
+FROM employees AS emp
+INNER JOIN titles ti ON emp.emp_no = ti.emp_no
+INNER JOIN dept_emp de ON emp.emp_no = de.emp_no
+WHERE de.to_date = '9999-01-01' AND (emp.birth_date BETWEEN '1965-01-01' AND '1965-12-31');
+</br>
+
+**Dynamic Table created**
+- emp_eligibility: 
+
+
+
 ### Challenge Analysis
-In your first paragraph, introduce the problem that you were using data to solve.
+For the week 7 challenge, we were instructed to assist Bobby's manager to determine how many roles will soon need to be filled as the "silver tsunami" begins to make an impact at his enterprise employer: Pewlett Hackard. The silver tsunami refers to the phenomenon they are experiencing as a significant proportion of their employees are set to retire, leaving major gaps to fill littered across the enterprise. Bobby's manager is interested in getting the full list of current employees born in 1965, making them eligible for retirement. 
+
+To analytically answer this request, we started with the datasets obtained in .CSV form for the tables as described above in the Table Names: Description section.
 
 In your second paragraph, summarize the steps that you took to solve the problem, as well as the challenges that you encountered along the way. This is an excellent spot to provide examples and descriptions of the code that you used.
 
