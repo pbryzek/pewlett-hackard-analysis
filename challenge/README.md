@@ -139,13 +139,19 @@ q: SELECT title, count(*) from emp_eligibility GROUP BY title;
 "Senior Engineer" 529
 <br/>
 <br/>
-One immediate limitation of the analysis of this challenge is that when analyzing the impact of the silver tsunami, we only took into account those employees turning 65 this year. This segment of 1,549 represents only those currently employed and turning 65 this year - it fails to account for any current employee over the age of 65. At a macro level, we can see that there are 1,549 eligibile employees for retirement out of 240,142 employees with a current job title. At a macro level this shows that 1,549 / 240,142 or .645% of the employee population, less than 1% of the employees. From the group by title query on the emp_eligibility table, it provides a breakdown of the different job titles that have current employees eligible to retire. We can see the following distributions, when taking into each job title's eligibility divided by the total eligible (1,549). 
+One immediate limitation of the analysis of this challenge is that when analyzing the impact of the silver tsunami, we only took into account those employees turning 65 this year. This segment of 1,549 represents only those currently employed and turning 65 this year - it fails to account for any current employee over the age of 65. At a macro level, we can see that there are 1,549 eligibile employees for retirement out of 240,142 employees with a current job title. 
 <br/>
 <br/>
-**Title Distribution**
-- Assistant Engineer: 29; 1.87%
+At a macro level this shows that 1,549 / 240,142 or .645% of the employee population, less than 1% of the employees. From the group by title query on the emp_eligibility table, it provides a breakdown of the different job titles that have current employees eligible to retire. We can see the following distributions, when taking into each job title's eligibility divided by the total eligible (1,549). 
+<br/>
+<br/>
+**Title Distribution of all retirees eligibility**
+- Assistant Engineer: 29; 1.87% 
 - Staff: 155; 10.01%
 - Senior Staff: 569; 36.73%
 - Technique Leader: 77; 4.97%
 - Engineer: 190; 12.27%
-- Senior Engineer 529
+- Senior Engineer 529; 34.15%
+<br/>
+<br/>
+The previous query shows that Senior Staff is the title type that has the largest percentage (36.7%) of employees that is set to become retirement eligible. Senior Engineer shows the 2nd highest percentage (34.15%) of all employees that are becoming retirement eligible.
