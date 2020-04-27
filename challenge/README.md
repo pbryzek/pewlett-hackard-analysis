@@ -111,13 +111,19 @@ For the week 7 challenge, we were instructed to assist Bobby's manager to determ
 
 To analytically answer this request, I started with the datasets obtained in .CSV form for the tables as described above in the Table Names: Description section. Based on the CSVs provided, I created schema tables in PostGres that correspond to the dataset received. After inspecting the various tables imported via pgAdmin tool, it was important to get an understanding for how the various tables are connected via foreign keys. After inspecting the data imported to the 6 original tables, I ran the emp_history query as provided above. This query created a new table emp_history which provides a row for every single title that any employee held over time at Pewlett Hackard. The next query run was the emp_titles query as provided above. This query creates a new partition table by filtering out the most recent entry for each emp_no in the emp_history table. The emp_titles table thus holds the most recent (current) title for each employee along with other pertinent employee data points. This table resolved the issue of duplicates in the emp_history table. Finally, one more table partition was needed to filter out those employees with birth dates in 1965 i.e. those that will become eligible to retire. The emp_eligibility table was created by taking the rows in the emp_titles tables, joining it to the employees table, and filtering out those employees who had birth dates in 1965, since the birth_date info was stored in the original employees table, that is where the birth_date filtering occurred. 
 
-*Analytics Queries*
+**Analytics Queries**
+<br/>
 q: SELECT count(1) FROM employees;
+<br/>
 d: Running an inital query on the employees table shows that this table holds a set of 300,024 employee rows.
 <br/>
 q: SELECT count(1) FROM emp_titles;
+<br/>
 d: Running a query on the employee title table shows there are 240,142 employees with a current title.
 <br/>
 q: SELECT count(1) FROM emp_eligibility;
+<br/>
 d: Inital query on the emp_eligibility table shows a set of 1,549 active employees who have a birth_date in 1965.
 <br/>
+
+One immediate limitation of the analysis of this challenge is that when analyzing the impact of the silver tsunami, we only took into account those employees turning 65 this year. This segment of 1,549 represents only those currently employed and turning 65 this year - it fails to account for any current employee over the age of 65. 
