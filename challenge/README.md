@@ -139,6 +139,11 @@ q: SELECT title, count(*) from emp_eligibility GROUP BY title;
 "Senior Engineer" 529
 <br/>
 <br/>
+q: SELECT title, count(*) from emp_titles GROUP BY title;
+<br/>
+d: This query results in the number of titles currently employed by PH.
+<br/>
+
 One immediate limitation of the analysis of this challenge is that when analyzing the impact of the silver tsunami, we only took into account those employees turning 65 this year. This segment of 1,549 represents only those currently employed and turning 65 this year - it fails to account for any current employee over the age of 65. At a macro level, we can see that there are 1,549 eligibile employees for retirement out of 240,142 employees with a current job title. 
 <br/>
 <br/>
@@ -167,10 +172,23 @@ Title: (total num eligible); percentage of total eligible
 - Senior Engineer 529; 34.15%
 <br/>
 
-**(job title eligibility)/(total job titles employed)**
-- Assistant Engineer: 29 / ; 1.87% 
-- Staff: 155; 10.01%
-- Senior Staff: 569; 36.73%
-- Technique Leader: 77; 4.97%
-- Engineer: 190; 12.27%
-- Senior Engineer 529; 34.15%
+**Total job titles employed by PH**
+*SELECT title, count(*) from emp_titles GROUP BY title;*
+- Assistant Engineer: 3,588
+- Engineer: 30,983
+- Manager: 9 
+- Senior Engineer: 85,939
+- Senior Staff: 82,024
+- Staff: 25,526
+- Technique Leader: 12,055
+
+**Percentage of job title that will become retirement eligible**
+- Assistant Engineer: 29/3,588 = .81%
+- Engineer: 190/30,983 = .61%
+- Manager: 0/9 = 0%
+- Senior Engineer: 529/85,939 = .62%
+- Senior Staff: 569/82,024 = .69%
+- Staff: 155/25,526 = .61%
+- Technique Leader: 77/12,055 = .64%
+
+When evaluating the percentage from each job title that will be eligible for retirement, we can see that the range is from (.61%-.81%) when we except Manager title which had 0 employees reaching retirement age. Thus we can conclude that across Assitant Engineer, Engineer, Sr. Engineer, Sr. Staff, Staff, and Technique Leader all will experience a comparable impact to their respective workforces as a result of the upcoming silver tsunami. When observing at a macro level, we can see that about 71% of the upcoming retirement class consists of Sr. Engineers and Sr. Staff. 
