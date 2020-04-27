@@ -40,10 +40,9 @@ These tables were created to support the raw data import .CSV files. These are t
 - dept_manager: Primary key is a composite of the unique employer number (foreign key to the Employers table) and the unique deptartment number (foreign key to departments table). This table holds the managers for the different departments.
 
 ### PostGres Queries: Dynamic Tables generated:
-
 #### Table: emp_history
 **Description**
-This purpose of the emp_history query is to combine various fields regarding the same employee into a new table. It uses three inner joins to get data from employees, titles, dept_emp, and salaries tables - all joined on the unique emp_no. This table holds the relevant info for employees accounting for all their various titles held within the company.
+This purpose of the emp_history query is to combine various fields regarding the same employee into a new table. It uses three inner joins to get data from employees, titles, dept_emp, and salaries tables - all joined on the unique emp_no. This table holds the relevant info for employees accounting for all their various titles held within the company. The de.to_date where clause is the bit in the query that results only in current employees in the company i.e. those that do not have an end_date set.
 </br>
 **Query**
 SELECT 
@@ -62,7 +61,7 @@ WHERE de.to_date = '9999-01-01';
 </br>
 #### Table: emp_titles
 **Description**
-The emp_titles table is a partition table from emp_history, accounting only for the most recent (current) employee title.
+The emp_titles table is a partition table from emp_history, accounting only for the most recent (current) employee title. This is relevant as the same employee (emp_no) may have had multiple titles over time at this company.
 
 </br>
 **Query**
@@ -109,8 +108,6 @@ WHERE de.to_date = '9999-01-01' AND (emp.birth_date BETWEEN '1965-01-01' AND '19
 ### Challenge Analysis
 For the week 7 challenge, we were instructed to assist Bobby's manager to determine how many roles will soon need to be filled as the "silver tsunami" begins to make an impact at his enterprise employer: Pewlett Hackard. The silver tsunami refers to the phenomenon they are experiencing as a significant proportion of their employees are set to retire, leaving major gaps to fill littered across the enterprise. Bobby's manager is interested in getting the full list of current employees born in 1965, making them eligible for retirement. 
 
-To analytically answer this request, we started with the datasets obtained in .CSV form for the tables as described above in the Table Names: Description section.
-
-In your second paragraph, summarize the steps that you took to solve the problem, as well as the challenges that you encountered along the way. This is an excellent spot to provide examples and descriptions of the code that you used.
+To analytically answer this request, I started with the datasets obtained in .CSV form for the tables as described above in the Table Names: Description section. Based on the CSVs provided, I created schema tables in PostGres that correspond to the dataset received. After inspecting the various tables imported via pgAdmin tool, it was important to get an understanding for how the various tables are connected via foreign keys. After inspecting the data imported to the 6 original tables, I ran the emp_history query as provided above. This query created a new table emp_history which provides a row for every single title that any employee held over time at Pewlett Hackard. The next query run was the emp_titles query as provided above. This query creates a new partition table by filtering out the most recent entry for each emp_no in the emp_history table. The emp_titles table thus holds the most recent (current) title for each employee along with other pertinent employee data points. This table resolved the issue of duplicates in the emp_history table. Finally, one more table partition was needed to filter out those employees with birth dates in 1965 i.e. those that will become eligible to retire. The emp_eligibility table was created by taking the rows in the emp_titles tables, joining it to the employees table, and filtering out those employees who had birth dates in 1965, since the birth_date info was stored in the original employees table, that is where the birth_date filtering occurred. 
 
 In your final paragraph, share the results of your analysis and discuss the data that you’ve generated. Have you identified any limitations to the analysis? What next steps would you recommend?
